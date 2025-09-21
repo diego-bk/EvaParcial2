@@ -187,3 +187,32 @@ Asegúrate de que estás utilizando la versión 8.0.1 o superior de System.Ident
 ```xml
 <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
 ```
+
+
+
+## Apidog
+<img width="886" height="558" alt="image" src="https://github.com/user-attachments/assets/56e3a8e4-0ad2-41af-8a52-c67a1e9a257f" />
+<img width="886" height="558" alt="image" src="https://github.com/user-attachments/assets/043e22e4-e366-4cd4-9442-68a388be64d7" />
+<img width="886" height="532" alt="image" src="https://github.com/user-attachments/assets/3b3923aa-b9a9-4375-8f82-89a200ce2e89" />
+<img width="886" height="531" alt="image" src="https://github.com/user-attachments/assets/79c2dc7e-898d-4227-89b0-d26d62e62418" />
+<img width="886" height="538" alt="image" src="https://github.com/user-attachments/assets/0360d551-f3aa-44c3-a4e2-8e6c5085fa5b" />
+<img width="886" height="538" alt="image" src="https://github.com/user-attachments/assets/a104f705-a862-42a9-83a7-2e911d5bab3d" />
+<img width="886" height="373" alt="image" src="https://github.com/user-attachments/assets/4f2939f6-50a1-4017-b985-bc792f6efba5" />
+<img width="886" height="399" alt="image" src="https://github.com/user-attachments/assets/efca9dea-058e-4464-a0ce-b7c5324a8b76" />
+<img width="886" height="343" alt="image" src="https://github.com/user-attachments/assets/0eec7e65-535f-49ec-b412-0bdecc335595" />
+
+## Angular
+<img width="1280" height="589" alt="image" src="https://github.com/user-attachments/assets/ed63c7bd-e398-4317-a9c9-e5d73afc2572" />
+<img width="1297" height="596" alt="image" src="https://github.com/user-attachments/assets/2d798ca9-0ac3-45c9-ab8e-caf5edbabc3d" />
+<img width="1290" height="599" alt="image" src="https://github.com/user-attachments/assets/442c638e-a389-4833-b53e-926baff5e8bc" />
+<img width="1286" height="586" alt="image" src="https://github.com/user-attachments/assets/7958d11d-67a2-4841-a1d0-590028eb262f" />
+<img width="1280" height="594" alt="image" src="https://github.com/user-attachments/assets/2854e5fd-30ce-4161-866d-9a87ff8f5d84" />
+<img width="1291" height="580" alt="image" src="https://github.com/user-attachments/assets/a62b258e-197c-470d-a5cb-5be9fb079026" />
+<img width="1279" height="575" alt="image" src="https://github.com/user-attachments/assets/ca229c43-f5c2-4d70-b827-68dace32e7b4" />
+<img width="1273" height="580" alt="image" src="https://github.com/user-attachments/assets/b8853c7c-68e6-44f0-b426-6ba33c2ae32d" />
+<img width="1286" height="586" alt="image" src="https://github.com/user-attachments/assets/9d4a26d4-90ee-49b5-86f0-50bafc86f63b" />
+<img width="1265" height="591" alt="image" src="https://github.com/user-attachments/assets/9250a398-3ccf-48b6-9d8b-231962a3077e" />
+<img width="1276" height="580" alt="image" src="https://github.com/user-attachments/assets/7637ca58-eff0-457b-8eae-ca0945ba3282" />
+<img width="1277" height="587" alt="image" src="https://github.com/user-attachments/assets/c9529a43-9588-4464-9936-10b671fc146d" />
+<img width="1272" height="582" alt="image" src="https://github.com/user-attachments/assets/31ed5dfa-c095-4818-b13a-65a8c46b3717" />
+<img width="1280" height="585" alt="image" src="https://github.com/user-attachments/assets/8016ed71-4178-4a0e-b7e7-9bedd328916c" />
