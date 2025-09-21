@@ -59,19 +59,19 @@
           <div class="mt-4">
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Nombre</label>
-              <input [(ngModel)]="nuevoAsistente.nombre" type="text" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="nuevoAsistente.nombre" type="text" title="Ingrese el nombre del asistente" placeholder="Ej: Juan" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Apellido</label>
-              <input [(ngModel)]="nuevoAsistente.apellido" type="text" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="nuevoAsistente.apellido" type="text" title="Ingrese el apellido del asistente" placeholder="Ej: Pérez" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Email</label>
-              <input [(ngModel)]="nuevoAsistente.email" type="email" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="nuevoAsistente.email" type="email" title="Ingrese el email del asistente" placeholder="Ej: juan.perez@email.com" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Teléfono (opcional)</label>
-              <input [(ngModel)]="nuevoAsistente.telefono" type="text" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="nuevoAsistente.telefono" type="text" title="Ingrese el teléfono del asistente (opcional)" placeholder="Ej: +1234567890" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
           </div>
         </div>
@@ -99,19 +99,19 @@
           <div class="mt-4" *ngIf="asistenteSeleccionado">
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Nombre</label>
-              <input [(ngModel)]="asistenteSeleccionado.nombre" type="text" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="asistenteSeleccionado.nombre" type="text" title="Edite el nombre del asistente" placeholder="Ej: Juan" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Apellido</label>
-              <input [(ngModel)]="asistenteSeleccionado.apellido" type="text" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="asistenteSeleccionado.apellido" type="text" title="Edite el apellido del asistente" placeholder="Ej: Pérez" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Email</label>
-              <input [(ngModel)]="asistenteSeleccionado.email" type="email" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="asistenteSeleccionado.email" type="email" title="Edite el email del asistente" placeholder="Ej: juan.perez@email.com" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Teléfono (opcional)</label>
-              <input [(ngModel)]="asistenteSeleccionado.telefono" type="text" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="asistenteSeleccionado.telefono" type="text" title="Edite el teléfono del asistente (opcional)" placeholder="Ej: +1234567890" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
           </div>
         </div>

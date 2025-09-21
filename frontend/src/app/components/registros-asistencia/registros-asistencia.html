@@ -20,23 +20,19 @@
     <table class="min-w-full divide-y divide-gray-200">
       <thead class="bg-gray-50">
         <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">ID</th>
           <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Asistente</th>
           <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Conferencia</th>
-          <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Fecha Registro</th>
           <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Asistió</th>
           <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Acciones</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200 bg-white">
         <tr *ngFor="let registro of registros">
-          <td class="whitespace-nowrap px-6 py-4">{{ registro.id }}</td>
           <td class="whitespace-nowrap px-6 py-4">{{ getNombreAsistente(registro.asistente_id) }}</td>
           <td class="whitespace-nowrap px-6 py-4">{{ getTituloConferencia(registro.conferencia_id) }}</td>
-          <td class="whitespace-nowrap px-6 py-4">{{ registro.fecha_registro }}</td>
           <td class="whitespace-nowrap px-6 py-4">
-            <span *ngIf="registro.asistio" class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">Sí</span>
-            <span *ngIf="!registro.asistio" class="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800">No</span>
+            <span *ngIf="registro.asistencia" class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">Sí</span>
+            <span *ngIf="!registro.asistencia" class="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800">No</span>
           </td>
           <td class="whitespace-nowrap px-6 py-4 text-sm font-medium">
             <button (click)="abrirModalEditar(registro)" class="mr-2 text-indigo-600 hover:text-indigo-900">Editar</button>
@@ -44,7 +40,7 @@
           </td>
         </tr>
         <tr *ngIf="registros.length === 0 && !loading">
-          <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">No hay registros disponibles</td>
+          <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">No hay registros disponibles</td>
         </tr>
       </tbody>
     </table>
@@ -62,27 +58,23 @@
           <div class="mt-4">
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Asistente</label>
-              <select [(ngModel)]="nuevoRegistro.asistente_id" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <select [(ngModel)]="nuevoRegistro.asistente_id" title="Seleccione el asistente para el registro" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
                 <option [value]="0">Seleccione un asistente</option>
-                <option *ngFor="let asistente of asistentes" [value]="asistente.id">{{ asistente.nombre }}</option>
+                <option *ngFor="let asistente of asistentes" [value]="asistente.asistente_id">{{ asistente.nombre }}</option>
               </select>
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Conferencia</label>
-              <select [(ngModel)]="nuevoRegistro.conferencia_id" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <select [(ngModel)]="nuevoRegistro.conferencia_id" title="Seleccione la conferencia para el registro" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
                 <option [value]="0">Seleccione una conferencia</option>
-                <option *ngFor="let conferencia of conferencias" [value]="conferencia.id">{{ conferencia.titulo }}</option>
+                <option *ngFor="let conferencia of conferencias" [value]="conferencia.conferencia_id">{{ conferencia.nombre }}</option>
               </select>
-            </div>
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700">Fecha de Registro</label>
-              <input [(ngModel)]="nuevoRegistro.fecha_registro" type="date" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Asistió</label>
               <div class="mt-2">
                 <label class="inline-flex items-center">
-                  <input [(ngModel)]="nuevoRegistro.asistio" type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600">
+                  <input [(ngModel)]="nuevoRegistro.asistencia" type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600">
                   <span class="ml-2 text-gray-700">Sí</span>
                 </label>
               </div>
@@ -113,25 +105,21 @@
           <div class="mt-4" *ngIf="registroSeleccionado">
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Asistente</label>
-              <select [(ngModel)]="registroSeleccionado.asistente_id" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
-                <option *ngFor="let asistente of asistentes" [value]="asistente.id">{{ asistente.nombre }}</option>
+              <select [(ngModel)]="registroSeleccionado.asistente_id" title="Edite el asistente del registro" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+                <option *ngFor="let asistente of asistentes" [value]="asistente.asistente_id">{{ asistente.nombre }}</option>
               </select>
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Conferencia</label>
-              <select [(ngModel)]="registroSeleccionado.conferencia_id" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
-                <option *ngFor="let conferencia of conferencias" [value]="conferencia.id">{{ conferencia.titulo }}</option>
+              <select [(ngModel)]="registroSeleccionado.conferencia_id" title="Edite la conferencia del registro" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+                <option *ngFor="let conferencia of conferencias" [value]="conferencia.conferencia_id">{{ conferencia.nombre }}</option>
               </select>
-            </div>
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700">Fecha de Registro</label>
-              <input [(ngModel)]="registroSeleccionado.fecha_registro" type="date" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Asistió</label>
               <div class="mt-2">
                 <label class="inline-flex items-center">
-                  <input [(ngModel)]="registroSeleccionado.asistio" type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600">
+                  <input [(ngModel)]="registroSeleccionado.asistencia" type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600">
                   <span class="ml-2 text-gray-700">Sí</span>
                 </label>
               </div>

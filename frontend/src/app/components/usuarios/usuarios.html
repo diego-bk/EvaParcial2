@@ -40,7 +40,7 @@
           </td>
           <td class="whitespace-nowrap px-6 py-4 text-sm font-medium">
             <button (click)="abrirModalEditar(usuario)" class="mr-2 text-indigo-600 hover:text-indigo-900">Editar</button>
-            <button (click)="abrirModalEliminar(usuario)" class="text-red-600 hover:text-red-900">Eliminar</button>
+            <button (click)="abrirModalEliminar(usuario)" class="text-red-600 hover:text-red-900">Deshabilitar</button>
           </td>
         </tr>
         <tr *ngIf="usuarios.length === 0 && !loading">
@@ -62,22 +62,22 @@
           <div class="mt-4">
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Username</label>
-              <input [(ngModel)]="nuevoUsuario.username" type="text" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="nuevoUsuario.username" type="text" title="Ingrese el nombre de usuario" placeholder="Ej: usuario123" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Password</label>
-              <input [(ngModel)]="nuevoUsuario.password" type="password" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="nuevoUsuario.password" type="password" title="Ingrese la contraseña del usuario" placeholder="Contraseña segura" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Rol</label>
-              <select [(ngModel)]="nuevoUsuario.rol" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <select [(ngModel)]="nuevoUsuario.rol" title="Seleccione el rol del usuario" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
                 <option value="Administrador">Administrador</option>
                 <option value="Usuario">Usuario</option>
               </select>
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Estado</label>
-              <select [(ngModel)]="nuevoUsuario.estado" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <select [(ngModel)]="nuevoUsuario.estado" title="Seleccione el estado del usuario" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
                 <option [value]="true">Activo</option>
                 <option [value]="false">Inactivo</option>
               </select>
@@ -108,22 +108,22 @@
           <div class="mt-4" *ngIf="usuarioSeleccionado">
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Username</label>
-              <input [(ngModel)]="usuarioSeleccionado.username" type="text" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="usuarioSeleccionado.username" type="text" title="Edite el nombre de usuario" placeholder="Ej: usuario123" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Password (opcional)</label>
-              <input [(ngModel)]="usuarioSeleccionado.password" type="password" placeholder="Dejar vacío para mantener actual" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <input [(ngModel)]="usuarioSeleccionado.password" type="password" title="Edite la contraseña del usuario (opcional)" placeholder="Dejar vacío para mantener actual" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Rol</label>
-              <select [(ngModel)]="usuarioSeleccionado.rol" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <select [(ngModel)]="usuarioSeleccionado.rol" title="Edite el rol del usuario" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
                 <option value="Administrador">Administrador</option>
                 <option value="Usuario">Usuario</option>
               </select>
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700">Estado</label>
-              <select [(ngModel)]="usuarioSeleccionado.estado" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+              <select [(ngModel)]="usuarioSeleccionado.estado" title="Edite el estado del usuario" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
                 <option [value]="true">Activo</option>
                 <option [value]="false">Inactivo</option>
               </select>
@@ -157,16 +157,16 @@
               </svg>
             </div>
             <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-              <h3 class="text-lg font-medium leading-6 text-gray-900">Eliminar Usuario</h3>
+              <h3 class="text-lg font-medium leading-6 text-gray-900">Deshabilitar Usuario</h3>
               <div class="mt-2">
-                <p class="text-sm text-gray-500">¿Estás seguro que deseas eliminar este usuario? Esta acción no se puede deshacer.</p>
+                <p class="text-sm text-gray-500">¿Estás seguro que deseas deshabilitar este usuario? Esta acción no se puede deshacer.</p>
               </div>
             </div>
           </div>
         </div>
         <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
           <button (click)="eliminarUsuario()" type="button" class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">
-            Eliminar
+            Deshabilitar
           </button>
           <button (click)="cerrarModalEliminar()" type="button" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm">
             Cancelar

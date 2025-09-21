@@ -33,32 +33,48 @@ export class RegistrosAsistenciaService {
     return this.getRegistros();
   }
 
-  getRegistro(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
+  getRegistro(conferenciaId: number, asistenteId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${conferenciaId}/${asistenteId}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 
   createRegistro(registro: any): Observable<any> {
+    console.log('Datos enviados al backend (POST):', JSON.stringify(registro, null, 2));
+    console.log('URL:', this.apiUrl);
+    console.log('Headers:', this.getHeaders());
     return this.http.post<any>(this.apiUrl, registro, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 
-  updateRegistro(registro: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${registro.id}`, registro, { headers: this.getHeaders() })
+  updateRegistro(conferenciaId: number, asistenteId: number, registro: any): Observable<any> {
+    console.log('Datos enviados al backend (PUT):', JSON.stringify(registro, null, 2));
+    console.log('URL:', `${this.apiUrl}/${conferenciaId}/${asistenteId}`);
+    console.log('Headers:', this.getHeaders());
+    return this.http.put<any>(`${this.apiUrl}/${conferenciaId}/${asistenteId}`, registro, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 
-  deleteRegistro(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
+  deleteRegistro(conferenciaId: number, asistenteId: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${conferenciaId}/${asistenteId}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 
   private handleError(error: any) {
+    console.error('Error completo del servicio:', error);
     let errorMessage = 'Error en la operación';
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      errorMessage = `Código: ${error.status}\nMensaje: ${error.error?.message || error.message}`;
+      if (error.status === 400) {
+        const details = error.error?.message || error.error || 'Datos inválidos';
+        errorMessage = `Error 400 - Solicitud inválida: ${details}`;
+      } else if (error.status === 401) {
+        errorMessage = 'Error 401 - No autorizado. Verifique su sesión.';
+      } else if (error.status === 404) {
+        errorMessage = 'Error 404 - Recurso no encontrado.';
+      } else {
+        errorMessage = `Código: ${error.status}\nMensaje: ${error.error?.message || error.message || error.statusText}`;
+      }
     }
     return throwError(() => new Error(errorMessage));
   }

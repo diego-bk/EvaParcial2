@@ -4,30 +4,44 @@ import { AsistentesService } from '../../services/asistentes.service';
 import { ConferenciasService } from '../../services/conferencias.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 
 interface RegistroAsistencia {
-  id: number;
-  asistente_id: number;
   conferencia_id: number;
-  fecha_registro: string;
-  asistio: boolean;
+  asistente_id: number;
+  asistencia: boolean;
+  nombreConferencia?: string;
+  nombreAsistente?: string;
+  apellidoAsistente?: string;
+}
+
+// DTOs que coinciden exactamente con el backend
+interface RegistroAsistenciaCreateDTO {
+  conferencia_id: number;
+  asistente_id: number;
+  asistencia: boolean;
+}
+
+interface RegistroAsistenciaUpdateDTO {
+  asistencia: boolean;
 }
 
 interface Asistente {
-  id: number;
+  asistente_id: number;
   nombre: string;
+  apellido: string;
   email: string;
   telefono: string;
-  conferencia_id: number;
 }
 
 interface Conferencia {
-  id: number;
-  titulo: string;
+  conferencia_id: number;
+  nombre: string;
   descripcion: string;
   fecha: string;
-  hora: string;
   ubicacion: string;
+  usuario_id: number;
+  username?: string;
 }
 
 @Component({
@@ -46,11 +60,9 @@ export class RegistrosAsistenciaComponent implements OnInit {
   // Modal crear
   mostrarModalCrear = false;
   nuevoRegistro: RegistroAsistencia = {
-    id: 0,
-    asistente_id: 0,
     conferencia_id: 0,
-    fecha_registro: new Date().toISOString().split('T')[0],
-    asistio: false
+    asistente_id: 0,
+    asistencia: false
   };
 
   // Modal editar
@@ -67,9 +79,40 @@ export class RegistrosAsistenciaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cargarRegistros();
-    this.cargarAsistentes();
-    this.cargarConferencias();
+    // Cargar asistentes y conferencias primero, luego los registros
+    this.cargarAsistentesYConferencias();
+  }
+
+  cargarAsistentesYConferencias(): void {
+    this.loading = true;
+    this.errorMessage = '';
+    
+    console.log('Iniciando carga de datos de referencia...');
+    
+    // Usar forkJoin para cargar asistentes y conferencias en paralelo
+    forkJoin({
+      asistentes: this.asistentesService.getAll(),
+      conferencias: this.conferenciasService.getAll()
+    }).subscribe({
+      next: (data) => {
+        console.log('Datos de referencia cargados:', data);
+        
+        // Asignar los datos
+        this.asistentes = data.asistentes;
+        this.conferencias = data.conferencias;
+        
+        console.log('Asistentes asignados:', this.asistentes);
+        console.log('Conferencias asignadas:', this.conferencias);
+        
+        // Ahora cargar los registros
+        this.cargarRegistros();
+      },
+      error: (error) => {
+        console.error('Error al cargar datos de referencia:', error);
+        this.errorMessage = 'Error al cargar los datos de referencia: ' + error.message;
+        this.loading = false;
+      }
+    });
   }
 
   cargarRegistros(): void {
@@ -89,11 +132,15 @@ export class RegistrosAsistenciaComponent implements OnInit {
   }
 
   cargarAsistentes(): void {
+    console.log('Cargando asistentes...');
     this.asistentesService.getAll().subscribe({
       next: (data) => {
+        console.log('Asistentes recibidos del backend:', data);
         this.asistentes = data;
+        console.log('Array asistentes después de asignar:', this.asistentes);
       },
       error: (error) => {
+        console.error('Error al cargar asistentes:', error);
         this.errorMessage = 'Error al cargar los asistentes: ' + error.message;
       }
     });
@@ -111,23 +158,24 @@ export class RegistrosAsistenciaComponent implements OnInit {
   }
 
   getNombreAsistente(id: number): string {
-    const asistente = this.asistentes.find(a => a.id === id);
-    return asistente ? asistente.nombre : 'Desconocido';
+    console.log('getNombreAsistente llamado con ID:', id);
+    console.log('Array asistentes actual:', this.asistentes);
+    const asistente = this.asistentes.find(a => a.asistente_id === id);
+    console.log('Asistente encontrado:', asistente);
+    return asistente ? `${asistente.nombre} ${asistente.apellido}` : 'Desconocido';
   }
 
   getTituloConferencia(id: number): string {
-    const conferencia = this.conferencias.find(c => c.id === id);
-    return conferencia ? conferencia.titulo : 'Desconocida';
+    const conferencia = this.conferencias.find(c => c.conferencia_id === id);
+    return conferencia ? conferencia.nombre : 'Desconocida';
   }
 
   // Métodos para el modal de crear
   abrirModalCrear(): void {
     this.nuevoRegistro = {
-      id: 0,
-      asistente_id: 0,
       conferencia_id: 0,
-      fecha_registro: new Date().toISOString().split('T')[0],
-      asistio: false
+      asistente_id: 0,
+      asistencia: false
     };
     this.mostrarModalCrear = true;
   }
@@ -145,7 +193,16 @@ export class RegistrosAsistenciaComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    this.registrosService.createRegistro(this.nuevoRegistro).subscribe({
+    // Crear el objeto exactamente como lo espera el backend
+    const registroDTO: RegistroAsistenciaCreateDTO = {
+      conferencia_id: Number(this.nuevoRegistro.conferencia_id),
+      asistente_id: Number(this.nuevoRegistro.asistente_id),
+      asistencia: Boolean(this.nuevoRegistro.asistencia)
+    };
+
+    console.log('Datos a enviar:', registroDTO);
+
+    this.registrosService.createRegistro(registroDTO).subscribe({
       next: () => {
         this.cargarRegistros();
         this.cerrarModalCrear();
@@ -175,7 +232,19 @@ export class RegistrosAsistenciaComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    this.registrosService.updateRegistro(this.registroSeleccionado).subscribe({
+    // Crear el objeto exactamente como lo espera el backend
+    const registroDTO: RegistroAsistenciaUpdateDTO = {
+      asistencia: Boolean(this.registroSeleccionado.asistencia)
+    };
+
+    console.log('Datos a actualizar:', registroDTO);
+    console.log('IDs:', this.registroSeleccionado.conferencia_id, this.registroSeleccionado.asistente_id);
+
+    this.registrosService.updateRegistro(
+      Number(this.registroSeleccionado.conferencia_id), 
+      Number(this.registroSeleccionado.asistente_id), 
+      registroDTO
+    ).subscribe({
       next: () => {
         this.cargarRegistros();
         this.cerrarModalEditar();
@@ -205,7 +274,10 @@ export class RegistrosAsistenciaComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    this.registrosService.deleteRegistro(this.registroSeleccionado.id).subscribe({
+    this.registrosService.deleteRegistro(
+      this.registroSeleccionado.conferencia_id, 
+      this.registroSeleccionado.asistente_id
+    ).subscribe({
       next: () => {
         this.cargarRegistros();
         this.cerrarModalEliminar();

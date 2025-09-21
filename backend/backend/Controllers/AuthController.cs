@@ -75,5 +75,20 @@ namespace backend.Controllers
                 estado = nuevoUsuario.estado
             });
         }
+
+        [HttpGet("debug/usuarios")]
+        public async Task<ActionResult> DebugUsuarios()
+        {
+            var usuarios = await _context.Usuarios
+                .Select(u => new { 
+                    usuario_id = u.usuario_id, 
+                    username = u.username, 
+                    rol = u.rol, 
+                    estado = u.estado 
+                })
+                .ToListAsync();
+
+            return Ok(usuarios);
+        }
     }
 }

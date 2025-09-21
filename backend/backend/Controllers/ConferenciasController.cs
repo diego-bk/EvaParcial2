@@ -132,7 +132,7 @@ namespace backend.Controllers
         public async Task<ActionResult<ConferenciaDTO>> PostConferencia(ConferenciaCreateDTO conferenciaDTO)
         {
             // Obtener el ID del usuario actual desde el token JWT
-            var usuarioId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var usuarioId = GetCurrentUserId();
 
             var conferencia = new Conferencia
             {
@@ -173,7 +173,7 @@ namespace backend.Controllers
             }
 
             // Verificar si el usuario actual es el creador o es administrador
-            var usuarioId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var usuarioId = GetCurrentUserId();
             var rol = User.FindFirst(ClaimTypes.Role)?.Value;
 
             if (conferencia.usuario_id != usuarioId && rol != "Administrador")
@@ -190,15 +190,39 @@ namespace backend.Controllers
         private int GetCurrentUserId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
+            var usernameClaim = User.FindFirst(ClaimTypes.Name)?.Value ?? User.FindFirst("sub")?.Value;
             
             if (string.IsNullOrEmpty(userIdClaim))
             {
                 throw new UnauthorizedAccessException("Usuario no autenticado");
             }
             
+            // Caso especial: si el NameIdentifier contiene "Admin" o un rol, buscar el usuario por username
             if (!int.TryParse(userIdClaim, out int userId))
             {
-                throw new FormatException($"El identificador de usuario '{userIdClaim}' no es un número válido");
+                // Si tenemos un username, buscar el usuario en la base de datos
+                if (!string.IsNullOrEmpty(usernameClaim))
+                {
+                    var usuario = _context.Usuarios.FirstOrDefault(u => u.username == usernameClaim && u.estado);
+                    if (usuario != null)
+                    {
+                        return usuario.usuario_id;
+                    }
+                }
+                
+                // Si el NameIdentifier es "Admin" o "Administrador", buscar un usuario administrador
+                if (userIdClaim.Equals("Admin", StringComparison.OrdinalIgnoreCase) || 
+                    userIdClaim.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
+                {
+                    var adminUser = _context.Usuarios.FirstOrDefault(u => u.rol == "Administrador" && u.estado);
+                    if (adminUser != null)
+                    {
+                        return adminUser.usuario_id;
+                    }
+                }
+                
+                throw new FormatException($"El identificador de usuario '{userIdClaim}' no es un número válido y no se pudo resolver a un usuario existente");
             }
             
             return userId;
