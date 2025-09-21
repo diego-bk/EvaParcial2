@@ -145,7 +145,7 @@ export class RegistrosAsistenciaComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    this.registrosService.create(this.nuevoRegistro).subscribe({
+    this.registrosService.createRegistro(this.nuevoRegistro).subscribe({
       next: () => {
         this.cargarRegistros();
         this.cerrarModalCrear();
@@ -175,7 +175,7 @@ export class RegistrosAsistenciaComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    this.registrosService.update(this.registroSeleccionado).subscribe({
+    this.registrosService.updateRegistro(this.registroSeleccionado).subscribe({
       next: () => {
         this.cargarRegistros();
         this.cerrarModalEditar();
@@ -205,7 +205,7 @@ export class RegistrosAsistenciaComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    this.registrosService.delete(this.registroSeleccionado.id).subscribe({
+    this.registrosService.deleteRegistro(this.registroSeleccionado.id).subscribe({
       next: () => {
         this.cargarRegistros();
         this.cerrarModalEliminar();

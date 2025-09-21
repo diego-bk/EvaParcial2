@@ -29,6 +29,10 @@ export class RegistrosAsistenciaService {
       .pipe(catchError(this.handleError));
   }
 
+  getAll(): Observable<any[]> {
+    return this.getRegistros();
+  }
+
   getRegistro(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
@@ -39,8 +43,8 @@ export class RegistrosAsistenciaService {
       .pipe(catchError(this.handleError));
   }
 
-  updateRegistro(id: number, registro: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, registro, { headers: this.getHeaders() })
+  updateRegistro(registro: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${registro.id}`, registro, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 

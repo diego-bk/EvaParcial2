@@ -31,6 +31,10 @@ export class ConferenciasService {
       );
   }
 
+  getAll(): Observable<any[]> {
+    return this.getConferencias();
+  }
+
   getConferencia(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
       .pipe(
@@ -45,8 +49,8 @@ export class ConferenciasService {
       );
   }
 
-  updateConferencia(id: number, conferencia: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, conferencia, { headers: this.getHeaders() })
+  updateConferencia(conferencia: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${conferencia.conferencia_id}`, conferencia, { headers: this.getHeaders() })
       .pipe(
         catchError(this.handleError)
       );

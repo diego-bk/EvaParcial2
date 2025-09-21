@@ -1,18 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
-import { Conferencias } from './conferencias';
+import { ConferenciasComponent } from './conferencias';
+import { ConferenciasService } from '../../services/conferencias.service';
 
-describe('Conferencias', () => {
-  let component: Conferencias;
-  let fixture: ComponentFixture<Conferencias>;
+describe('ConferenciasComponent', () => {
+  let component: ConferenciasComponent;
+  let fixture: ComponentFixture<ConferenciasComponent>;
 
   beforeEach(async () => {
+    const mockConferenciasService = jasmine.createSpyObj('ConferenciasService', ['getConferencias', 'createConferencia', 'updateConferencia', 'deleteConferencia']);
+    mockConferenciasService.getConferencias.and.returnValue(of([]));
+
     await TestBed.configureTestingModule({
-      imports: [Conferencias]
+      imports: [ConferenciasComponent],
+      providers: [
+        { provide: ConferenciasService, useValue: mockConferenciasService }
+      ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Conferencias);
+    fixture = TestBed.createComponent(ConferenciasComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

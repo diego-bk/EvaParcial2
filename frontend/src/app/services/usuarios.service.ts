@@ -46,6 +46,11 @@ export class UsuariosService {
   }
 
   updateUsuario(id: number, usuario: any): Observable<any> {
+    console.log('Servicio - URL:', `${this.apiUrl}/${id}`);
+    console.log('Servicio - Headers:', this.getHeaders());
+    console.log('Servicio - Body (antes de JSON.stringify):', usuario);
+    console.log('Servicio - Body (JSON.stringify):', JSON.stringify(usuario));
+    
     return this.http.put<any>(`${this.apiUrl}/${id}`, usuario, { headers: this.getHeaders() })
       .pipe(
         catchError(this.handleError)
@@ -60,13 +65,26 @@ export class UsuariosService {
   }
 
   private handleError(error: any) {
+    console.error('Error completo del servicio:', error);
+    console.error('Error status:', error.status);
+    console.error('Error statusText:', error.statusText);
+    console.error('Error error:', error.error);
+    console.error('Error message:', error.message);
+    console.error('Error url:', error.url);
+    
     let errorMessage = 'Error en la operación';
     if (error.error instanceof ErrorEvent) {
       // Error del cliente
       errorMessage = `Error: ${error.error.message}`;
     } else {
       // Error del servidor
-      errorMessage = `Código: ${error.status}\nMensaje: ${error.error?.message || error.message}`;
+      if (error.status === 400) {
+        // Para errores 400, intentar obtener más detalles
+        const details = error.error?.errors || error.error?.message || error.error || 'Datos inválidos';
+        errorMessage = `Error 400 - Solicitud inválida: ${JSON.stringify(details)}`;
+      } else {
+        errorMessage = `Código: ${error.status}\nMensaje: ${error.error?.message || error.message || error.statusText}`;
+      }
     }
     return throwError(() => new Error(errorMessage));
   }

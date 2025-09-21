@@ -60,8 +60,24 @@ namespace backend.Controllers
 
         // PUT: api/Usuarios/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario(int id, UsuarioUpdateDTO usuarioDTO)
+        public async Task<IActionResult> PutUsuario(int id, [FromBody] UsuarioUpdateDTO usuarioDTO)
         {
+            Console.WriteLine($"Backend - ID recibido: {id}");
+            Console.WriteLine($"Backend - UsuarioDTO recibido: {System.Text.Json.JsonSerializer.Serialize(usuarioDTO)}");
+            Console.WriteLine($"Backend - Estado tipo: {usuarioDTO?.estado?.GetType()}, Valor: {usuarioDTO?.estado}");
+            
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine($"Backend - ModelState inválido: {string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))}");
+                return BadRequest(ModelState);
+            }
+
+            if (usuarioDTO == null)
+            {
+                Console.WriteLine("Backend - UsuarioDTO es nulo");
+                return BadRequest(new { message = "El objeto usuarioDTO no puede ser nulo" });
+            }
+
             var usuario = await _context.Usuarios.FindAsync(id);
 
             if (usuario == null)

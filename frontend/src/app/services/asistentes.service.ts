@@ -29,6 +29,10 @@ export class AsistentesService {
       .pipe(catchError(this.handleError));
   }
 
+  getAll(): Observable<any[]> {
+    return this.getAsistentes();
+  }
+
   getAsistente(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
@@ -39,8 +43,8 @@ export class AsistentesService {
       .pipe(catchError(this.handleError));
   }
 
-  updateAsistente(id: number, asistente: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, asistente, { headers: this.getHeaders() })
+  updateAsistente(asistente: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${asistente.id}`, asistente, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 

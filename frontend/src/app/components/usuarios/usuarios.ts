@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { UsuariosService } from '../../services/usuarios.service';
 
 interface Usuario {
-  id: number;
-  nombre: string;
-  email: string;
+  usuario_id: number;
+  username: string;
   rol: string;
+  estado: boolean | string; // Puede venir como boolean o string desde el backend
+  password?: string; // Solo para creación
 }
 
 @Component({
@@ -20,7 +21,7 @@ interface Usuario {
 export class UsuariosComponent implements OnInit {
   usuarios: Usuario[] = [];
   usuarioSeleccionado: Usuario | null = null;
-  nuevoUsuario: Usuario = { id: 0, nombre: '', email: '', rol: '' };
+  nuevoUsuario: Usuario = { usuario_id: 0, username: '', rol: '', estado: true, password: '' };
   mostrarModalCrear = false;
   mostrarModalEditar = false;
   mostrarModalEliminar = false;
@@ -48,7 +49,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   abrirModalCrear(): void {
-    this.nuevoUsuario = { id: 0, nombre: '', email: '', rol: '' };
+    this.nuevoUsuario = { usuario_id: 0, username: '', rol: 'Usuario', estado: true, password: '' };
     this.mostrarModalCrear = true;
   }
 
@@ -84,12 +85,40 @@ export class UsuariosComponent implements OnInit {
     if (!this.usuarioSeleccionado) return;
     
     this.loading = true;
-    this.usuariosService.updateUsuario(this.usuarioSeleccionado.id, this.usuarioSeleccionado).subscribe({
+    
+    // Crear el objeto UsuarioUpdateDTO con solo los campos necesarios
+    const usuarioUpdateDTO = {
+      username: this.usuarioSeleccionado.username,
+      password: this.usuarioSeleccionado.password && this.usuarioSeleccionado.password.trim() !== '' 
+        ? this.usuarioSeleccionado.password 
+        : null,
+      rol: this.usuarioSeleccionado.rol,
+      estado: this.usuarioSeleccionado.estado === true || this.usuarioSeleccionado.estado === 'true' 
+        ? true 
+        : this.usuarioSeleccionado.estado === false || this.usuarioSeleccionado.estado === 'false'
+        ? false
+        : null
+    };
+    
+    console.log('Usuario seleccionado:', this.usuarioSeleccionado);
+    console.log('DTO a enviar:', usuarioUpdateDTO);
+    console.log('ID del usuario:', this.usuarioSeleccionado.usuario_id);
+    console.log('Tipos de datos en DTO:');
+    console.log('- username:', typeof usuarioUpdateDTO.username, usuarioUpdateDTO.username);
+    console.log('- password:', typeof usuarioUpdateDTO.password, usuarioUpdateDTO.password);
+    console.log('- rol:', typeof usuarioUpdateDTO.rol, usuarioUpdateDTO.rol);
+    console.log('- estado:', typeof usuarioUpdateDTO.estado, usuarioUpdateDTO.estado);
+    
+    this.usuariosService.updateUsuario(this.usuarioSeleccionado.usuario_id, usuarioUpdateDTO).subscribe({
       next: () => {
+        console.log('Usuario actualizado exitosamente');
         this.cargarUsuarios();
         this.cerrarModalEditar();
       },
       error: (error) => {
+        console.error('Error completo:', error);
+        console.error('Error status:', error.status);
+        console.error('Error message:', error.message);
         this.errorMessage = error.message;
         this.loading = false;
       }
@@ -110,7 +139,7 @@ export class UsuariosComponent implements OnInit {
     if (!this.usuarioSeleccionado) return;
     
     this.loading = true;
-    this.usuariosService.deleteUsuario(this.usuarioSeleccionado.id).subscribe({
+    this.usuariosService.deleteUsuario(this.usuarioSeleccionado.usuario_id).subscribe({
       next: () => {
         this.cargarUsuarios();
         this.cerrarModalEliminar();

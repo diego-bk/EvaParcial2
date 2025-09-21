@@ -2,19 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsistentesService } from '../../services/asistentes.service';
-import { ConferenciasService } from '../../services/conferencias.service';
 
 interface Asistente {
-  id: number;
+  asistente_id: number;
   nombre: string;
+  apellido: string;
   email: string;
-  telefono: string;
-  conferencia_id: number;
-}
-
-interface Conferencia {
-  id: number;
-  titulo: string;
+  telefono?: string;
 }
 
 @Component({
@@ -25,13 +19,12 @@ interface Conferencia {
 })
 export class AsistentesComponent implements OnInit {
   asistentes: Asistente[] = [];
-  conferencias: Conferencia[] = [];
   nuevoAsistente: Asistente = {
-    id: 0,
+    asistente_id: 0,
     nombre: '',
+    apellido: '',
     email: '',
-    telefono: '',
-    conferencia_id: 0
+    telefono: ''
   };
   asistenteSeleccionado: Asistente | null = null;
   
@@ -43,13 +36,11 @@ export class AsistentesComponent implements OnInit {
   errorMessage = '';
 
   constructor(
-    private asistentesService: AsistentesService,
-    private conferenciasService: ConferenciasService
+    private asistentesService: AsistentesService
   ) {}
 
   ngOnInit(): void {
     this.cargarAsistentes();
-    this.cargarConferencias();
   }
 
   cargarAsistentes(): void {
@@ -69,24 +60,15 @@ export class AsistentesComponent implements OnInit {
     });
   }
 
-  cargarConferencias(): void {
-    this.conferenciasService.getConferencias().subscribe({
-      next: (data) => {
-        this.conferencias = data;
-      },
-      error: (error) => {
-        console.error('Error al cargar conferencias:', error);
-      }
-    });
-  }
+
 
   abrirModalCrear(): void {
     this.nuevoAsistente = {
-      id: 0,
+      asistente_id: 0,
       nombre: '',
+      apellido: '',
       email: '',
-      telefono: '',
-      conferencia_id: 0
+      telefono: ''
     };
     this.mostrarModalCrear = true;
   }
@@ -157,7 +139,7 @@ export class AsistentesComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
     
-    this.asistentesService.deleteAsistente(this.asistenteSeleccionado.id).subscribe({
+    this.asistentesService.deleteAsistente(this.asistenteSeleccionado.asistente_id).subscribe({
       next: () => {
         this.cargarAsistentes();
         this.cerrarModalEliminar();
@@ -170,8 +152,5 @@ export class AsistentesComponent implements OnInit {
     });
   }
 
-  getNombreConferencia(conferencia_id: number): string {
-    const conferencia = this.conferencias.find(c => c.id === conferencia_id);
-    return conferencia ? conferencia.titulo : 'No asignada';
-  }
+
 }

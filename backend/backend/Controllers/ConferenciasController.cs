@@ -80,7 +80,7 @@ namespace backend.Controllers
             }
 
             // Verificar si el usuario actual es el creador o es administrador
-            var usuarioId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var usuarioId = GetCurrentUserId();
             var rol = User.FindFirst(ClaimTypes.Role)?.Value;
 
             if (conferencia.usuario_id != usuarioId && rol != "Administrador")

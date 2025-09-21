@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { ConferenciasService } from '../../services/conferencias.service';
 
 interface Conferencia {
-  id: number;
-  titulo: string;
-  descripcion: string;
+  conferencia_id: number;
+  nombre: string;
   fecha: string;
   ubicacion: string;
-  capacidad: number;
+  descripcion?: string;
+  usuario_id: number;
+  username?: string;
 }
 
 @Component({
@@ -21,12 +22,12 @@ interface Conferencia {
 export class ConferenciasComponent implements OnInit {
   conferencias: Conferencia[] = [];
   nuevaConferencia: Conferencia = {
-    id: 0,
-    titulo: '',
-    descripcion: '',
+    conferencia_id: 0,
+    nombre: '',
     fecha: '',
     ubicacion: '',
-    capacidad: 0
+    descripcion: '',
+    usuario_id: 0
   };
   conferenciaSeleccionada: Conferencia | null = null;
   
@@ -62,12 +63,12 @@ export class ConferenciasComponent implements OnInit {
 
   abrirModalCrear(): void {
     this.nuevaConferencia = {
-      id: 0,
-      titulo: '',
-      descripcion: '',
+      conferencia_id: 0,
+      nombre: '',
       fecha: '',
       ubicacion: '',
-      capacidad: 0
+      descripcion: '',
+      usuario_id: 0
     };
     this.mostrarModalCrear = true;
   }
@@ -138,7 +139,7 @@ export class ConferenciasComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
     
-    this.conferenciasService.deleteConferencia(this.conferenciaSeleccionada.id).subscribe({
+    this.conferenciasService.deleteConferencia(this.conferenciaSeleccionada.conferencia_id).subscribe({
       next: () => {
         this.cargarConferencias();
         this.cerrarModalEliminar();
