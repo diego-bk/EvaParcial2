@@ -187,6 +187,23 @@ namespace backend.Controllers
             return NoContent();
         }
 
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                throw new UnauthorizedAccessException("Usuario no autenticado");
+            }
+            
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                throw new FormatException($"El identificador de usuario '{userIdClaim}' no es un número válido");
+            }
+            
+            return userId;
+        }
+
         private bool ConferenciaExists(int id)
         {
             return _context.Conferencias.Any(e => e.conferencia_id == id);
